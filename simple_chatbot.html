@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #chatbox {
+            width: 100%;
+            max-width: 400px;
+            height: 500px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        #chatlogs {
+            padding: 10px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        #userInput {
+            border: none;
+            padding: 10px;
+            width: calc(100% - 20px);
+            margin: 10px;
+            border-radius: 4px;
+            box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+        }
+        .message {
+            margin: 10px;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        .bot {
+            background-color: #d1e7dd;
+            align-self: flex-start;
+        }
+        .user {
+            background-color: #cce5ff;
+            align-self: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <div id="chatbox">
+        <div id="chatlogs"></div>
+        <input id="userInput" type="text" placeholder="Type your message..." onkeydown="if(event.key === 'Enter'){ sendMessage(); }">
+    </div>
+
+    <script>
+        const chatlogs = document.getElementById('chatlogs');
+        const userInput = document.getElementById('userInput');
+
+        // Simple response logic
+        function getBotResponse(input) {
+            if (input.toLowerCase().includes("hello")) return "Hi there! How can I help you today?";
+            if (input.toLowerCase().includes("hours")) return "We're open Mon-Fri, 9am to 5pm.";
+            if (input.toLowerCase().includes("shipping")) return "Shipping takes 3–5 business days.";
+            return "Sorry, I'm not sure how to answer that. Can you try asking something else?";
+        }
+
+        // Send message function
+        function sendMessage() {
+            const userMessage = userInput.value;
+            if (userMessage.trim() === "") return;
+            appendMessage(userMessage, "user");
+
+            const botMessage = getBotResponse(userMessage);
+            setTimeout(() => appendMessage(botMessage, "bot"), 1000);
+
+            userInput.value = "";
+        }
+
+        // Append message to chatlogs
+        function appendMessage(message, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+            messageElement.textContent = message;
+            chatlogs.appendChild(messageElement);
+            chatlogs.scrollTop = chatlogs.scrollHeight;
+        }
+    </script>
+</body>
+</html>
